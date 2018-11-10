@@ -1,0 +1,31 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+}
+#main_section{
+	margin-top: 98px;
+}
+.bg-light {
+    background-color: #6597ca9c!important;
+}
+.footer{
+	background: #2e8b57e0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #ffffff;
+}
+.center{   
+	background: rgba(187, 81, 193, 0.05);
+}
+.recent-text{
+	margin-top: 90px;
+}
+.admin{
+	margin-right: 10px;
+    margin-top: 7px;
+    font-size: 19px;
+    color: #796a6a;
+}
