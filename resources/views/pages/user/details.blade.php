@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.masterProjectManager')
 @section('content')
 <fieldset>
     <legend><b>USER | DETAIL</b></legend>
@@ -21,7 +21,11 @@
             <td>:</td>
             <td>{{$user->name}}</td>
             <td width="30%" rowspan="7" align="center">
-                <img width="128" src="resources/anower.jpg"/>
+                @if(isset($user->profile_picture) && !empty($user->profile_picture))
+                <img src="{{ url($user->profile_picture) }}" >
+                    @else
+                    <img src="{{ url('images/profilePicture/profile-picture-not-available.jpg') }}" >
+                    @endif
             </td>
         </tr>
         <tr><td colspan="3"><hr /></td></tr>

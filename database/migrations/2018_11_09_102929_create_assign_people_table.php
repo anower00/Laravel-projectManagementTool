@@ -17,6 +17,7 @@ class CreateAssignPeopleTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('project_id');
+            $table->integer('assigned_by');
             $table->timestamps();
         });
     }

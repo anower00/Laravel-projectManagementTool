@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.masterProjectManager')
 @section('content')
 <fieldset>
     <legend><b>USER | PROFILE</b></legend>
@@ -13,50 +13,60 @@
         <tr>
             <td>User Name</td>
             <td>:</td>
-            <td>anower</td>
+            <td>{{$user->username}}</td>
         </tr>
         <tr><td colspan="3"><hr /></td></tr>
         <tr>
             <td>Name</td>
             <td>:</td>
-            <td>anower hasan</td>
+            <td>{{$user->name}}</td>
             <td width="30%" rowspan="7" align="center">
-                <img width="128" src="resources/anower.jpg"/>
+                @if(isset($user->profile_picture) && !empty($user->profile_picture))
+                    <img src="{{ url($user->profile_picture) }}" >
+                @else
+                    <img src="{{ url('images/profilePicture/profile-picture-not-available.jpg') }}" >
+                @endif
+                <div style="margin-top: 5%;margin-left: 15%">
+                    <form method="post" action="{{ url('changeProfilePicture') }}" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="picture" style="margin-bottom: 5%">
+                        <input type="submit" value="Update Profile Picture">
+                    </form>
+                </div>
             </td>
         </tr>
         <tr><td colspan="3"><hr /></td></tr>
         <tr>
             <td>Email</td>
             <td>:</td>
-            <td>anower.hasan@gmail.com</td>
+            <td>{{$user->email}}</td>
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
             <td>Gender</td>
             <td>:</td>
-            <td>Male</td>
+            <td>{{$user->gender}}</td>
         </tr>
         <tr><td colspan="3"><hr/></td></tr>
         <tr>
             <td>Date of Birth</td>
             <td>:</td>
-            <td>19/09/1998</td>
+            <td>{{$user->dateOfBirth}}</td>
         </tr>
         <tr><td colspan="3"><hr /></td></tr>
         <tr>
             <td>Designation</td>
             <td>:</td>
-            <td>Admin</td>
+            <td>{{$user->designation}}</td>
         </tr>
         <tr><td colspan="3"><hr /></td></tr>
         <tr>
             <td>Status</td>
             <td>:</td>
-            <td>Active</td>
+            <td>{{$user->status}}</td>
         </tr>
     </table>
     <hr/>
-    <a href="alluser.php" type="button" class="btn btn-success">Back to All User</a>
     <br/><br/>
 </fieldset>
     @endsection

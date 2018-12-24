@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $primaryKey = 'project_id';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
 //    public function assignProject()
@@ -16,11 +16,16 @@ class Project extends Model
 
     public function assignProject()
     {
-        return $this->belongsTo('App\Department', 'department_id');
+        return $this->belongsTo('App\Project', 'project_id');
     }
     public function assignUser()
     {
-        return $this->belongsTo('App\Department', 'department_id');
+        return $this->belongsTo('App\Users', 'user_id');
     }
+    public function assignTask()
+    {
+        return $this->hasMany('App\AssignTask', 'id');
+    }
+
     public $fillable = [];
 }

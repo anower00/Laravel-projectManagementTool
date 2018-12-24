@@ -16,11 +16,14 @@ class CreateAssignTasksTable extends Migration
         Schema::create('assign_tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('taskName');
+            $table->string('taskCode');
             $table->integer('project_id');
             $table->integer('user_id');
-            $table->string('description');
+            $table->string('assigned_by');
+            $table->string('description')->nullable();
             $table->date('dueDate');
-            $table->string('priority');
+            $table->string('status');
+            $table->string('priority')->nullable();
             $table->timestamps();
         });
     }

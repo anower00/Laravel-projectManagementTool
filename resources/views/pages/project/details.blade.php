@@ -60,9 +60,9 @@
         </tr>
     </table>
     <hr/>
-    <a href="edit.php" type="button" class="btn btn-success">Edit</a>
-    <a href="delete.php" type="button" class="btn btn-danger">Delete</a>
-    <a href="{{route('project.list')}}" type="button" class="btn btn-success">Project List</a>
+    <a href="{{route('project.edit' , ['$id' => $project->id])}}" type="button" class="btn btn-success">Edit</a>
+    <a href="#" type="button" class="btn btn-danger">Delete</a>
+    <a href="{{route('project.list')}}" type="button" class="btn btn-primary">Project List</a>
     <br/><br/>
 </fieldset>
     @endsection

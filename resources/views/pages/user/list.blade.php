@@ -1,22 +1,31 @@
-@extends('layouts.master')
+@extends('layouts.masterProjectManager')
 
 @section('content')
     <fieldset>
+        <div class="text-color">
+            <h2 class="text-success" >
+                @if(session('message'))
+                    {{session('message')}}
+                @endif
+            </h2>
+        </div>
         <legend>
             <b>USER | SEARCH</b>
         </legend>
+        <form action="{{ url('searchUser') }}" method="post">
+            @csrf
         Filter By
-        <select>
-            <option>Any</option>
-            <option>Name</option>
-            <option>Email</option>
-            <option>Designation</option>
-            <option>Status</option>
+        <select name="category">
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="designation">Designation</option>
+            <option value="status">Status</option>
         </select>
-        <input />
+        <input type="text" name="search_query" />
         <input type="submit" value="Search" />
-        <a href="{{route('user.create')}}" type="button" class="btn btn-success">Create New</a>
+        </form>
     </fieldset>
+
     <br/>
     <table width="100%" cellspacing="0" border="1" cellpadding="5">
         <tr>
@@ -26,18 +35,17 @@
             <th align="left">STATUS</th>
             <th colspan="3">OPTION</th>
         </tr>
+        <tr>
         @foreach($userlist as $user)
-            @if($user->designation != 'admin')
+            @if($user->designation != 'Admin')
 
-        <tr id="user-row_{{$user->id}}">
             <td>{{$user->name}}</td>
             <td>{{$user->email}}</td>
             <td>{{$user->designation}}</td>
             <td>{{$user->status}}</td>
             <td width="40"><a href="{{route('user.details' , ['id' => $user->id])}}">Detail</a></td>
             <td width="30"><a href="{{route('user.edit' , ['id' => $user->id])}}">Edit</a></td>
-            <td width="45"><a href="{{route('user.delete' , ['id' => $user->id])}}" onclick="deleteUserModal({{$user->id}},event)">Delete</a></td>
-            {{--<a href="url_to_delete" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>--}}
+            <td width="45"><a href="{{route('user.delete' , ['id' => $user->id])}}" onclick="{{'deleteUserModal('. $user->id .',event)'}}">Delete</a></td>
         </tr>
         @endif
             @endforeach
@@ -77,6 +85,8 @@
                     alert(data.msg);
                     $('#user-row_'+user_id).remove();
                     $('#deleteModal').modal('hide');
+
+                    location.reload();
                 },
                 error:function (data) {
                     alert(data);

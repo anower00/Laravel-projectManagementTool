@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Users extends Model
 {
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
-    public function assignProject()
+    public function assignTask()
     {
-        return $this->hasMany('App\AssignUser', 'user_id');
+        return $this->hasMany('App\AssignTask', 'id');
     }
     public $fillable = [];
 }

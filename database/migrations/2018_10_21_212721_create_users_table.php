@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('designation');
             $table->string('status');
             $table->string('gender');
+            $table->string('profile_picture')->nullable();
             $table->timestamps();
         });
     }

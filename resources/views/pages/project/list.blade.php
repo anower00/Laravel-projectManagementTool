@@ -11,8 +11,8 @@
             <th align="left">Project Name</th>
             <th align="left">Duration</th>
             <th align="left">STATUS</th>
-            <th align="left">Assign To</th>
-            <th align="left">Assign BY</th>
+            <th align="left">Assigned To</th>
+            <th align="left">Assigned By</th>
             {{--<th align="left">Project</th>--}}
             <th colspan="5">Actions</th>
         </tr>
@@ -22,12 +22,12 @@
             <td>{{$project->projectName}}</td>
             <td>{{$project->duration}}</td>
             <td>{{$project->status}}</td>
-            <td></td>
-            <td>{{$project->name}}</td>
+            <td>{{$project->assigned_to}}</td>
+            <td>{{$project->assigned_by}}</td>
             {{--<td width="40"><a href="#">project management</a></td>--}}
             <td width="40"><a href="{{route('project.details' , ['id' => $project->id])}}">Detail</a></td>
-            <td width="30"><a href="edit.php">Edit</a></td>
-            <td width="45"><a href="delete.php">Delete</a></td>
+            <td width="30"><a href="{{route('project.edit' , ['$id' => $project->id])}}">Edit</a></td>
+            <td width="45"><a href="{{route('project.delete', ['id' => $project->id])}}">Delete</a></td>
         </tr>
             @endforeach
     </table>

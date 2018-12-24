@@ -1,10 +1,10 @@
-@extends('layouts.master')
+@extends('layouts.masterProjectManager')
 
 @section('content')
     <fieldset>
         <legend><b>USER | CREATE</b></legend>
         <br/>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             @csrf
             @if($errors->any())
                 <ul>
@@ -37,7 +37,7 @@
                 <tr>
                     <td>Password</td>
                     <td>:</td>
-                    <td><input name="password" type="password" required></td>
+                    <td><input name="password" type="password" value="{{old('password')}}"></td>
                     <td></td>
                 </tr>
 
@@ -50,14 +50,14 @@
                     </td>
                     <td></td>
                 </tr>
-                <tr><td colspan="4"><hr /></td></tr>
+                <tr><td colspan="4"><hr/></td></tr>
                 <tr>
                     <td>Gender</td>
                     <td>:</td>
                     <td>
-                        <input name="gender" type="radio" value="Male">Male
-                        <input name="gender" type="radio" value="Female">Female
-                        <input name="gender" type="radio" value="Other">Other
+                        <input type="radio" name="gender" value="male"> Male
+                        <input type="radio" name="gender"  value="female"> Female
+                        <input type="radio" name="gender" value="other"> Other
                     </td>
                     <td></td>
                 </tr>
@@ -76,6 +76,7 @@
                     <td>:</td>
                     <td>
                         <select name="designation">
+                            <option disabled selected>select</option>
                             <option>Project Manager</option>
                             <option>Developer</option>
                             <option>Team Lead</option>
@@ -91,17 +92,28 @@
                     <td>:</td>
                     <td>
                         <select name="status">
-                            <option >Active</option>
+                            <option disabled selected>Select</option>
+                            <option disabled>select</option>
+                            <option>Active</option>
                             <option>Pending</option>
                             <option>Blocked</option>
                         </select>
                     </td>
                     <td></td>
                 </tr>
+                <tr><td colspan="4"><hr /></td></tr>
+                <tr>
+                    <td>Profile Picture</td>
+                    <td>:</td>
+                    <td>
+                        <input type="file" name="picture">
+                    </td>
+                    <td></td>
+                </tr>
             </table>
             <hr />
             <button type="submit" class="btn btn-success">Submit</button>
-            <a href="{{route('user.list')}}" type="button" class="btn btn-success">Back to All User</a>
+            <a href="{{route('user.list')}}" type="button" class="btn btn-primary">Back to All User</a>
         </form>
     </fieldset>
     @endsection

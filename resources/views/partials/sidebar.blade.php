@@ -2,7 +2,7 @@
     <h4 class="list-group-item list-group-item-action active">
         Account
     </h4>
-    <a href="#" class="list-group-item list-group-item-action">Change Password</a>
+    <a href="{{route('user.resetPassword')}}" class="list-group-item list-group-item-action">Change Password</a>
     <a href="{{route('user.profile')}}" class="list-group-item list-group-item-action">Profile</a>
 </div>
 

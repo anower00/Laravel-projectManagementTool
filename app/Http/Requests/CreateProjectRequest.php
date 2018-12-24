@@ -24,14 +24,12 @@ class CreateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'projectName' => 'required|alpha',
-            'codeName' => 'required',
+            'projectName' => 'required',
             'description' => 'required',
             'startDate' => 'required',
             'endDate' => 'required',
             'status' => 'required',
             'duration' => 'required',
-            'uploadDocument' => 'required'
         ];
     }
 }

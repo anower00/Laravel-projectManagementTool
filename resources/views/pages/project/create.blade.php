@@ -27,13 +27,6 @@
                 </tr>
                 <tr><td colspan="4"><hr /></td></tr>
                 <tr>
-                    <td>Project Code</td>
-                    <td>:</td>
-                    <td><input name="codeName" type="text" value="{{old('codeName')}}"></td>
-                    <td></td>
-                </tr>
-                <tr><td colspan="4"><hr /></td></tr>
-                <tr>
                     <td>Description</td>
                     <td>:</td>
                     <td>
@@ -46,7 +39,7 @@
                     <td valign="top">Possible Start Date</td>
                     <td valign="top">:</td>
                     <td>
-                        <input name="startDate" type="date" value="{{old('startDate')}}" id="startDated" onchange="dateDifference()">
+                        <input name="startDate" type="text" value="{{old('startDate')}}" id="startDate" onchange="dateDifference()">
                     </td>
                     <td></td>
                 </tr>
@@ -55,7 +48,7 @@
                     <td valign="top">Possible End Date</td>
                     <td valign="top">:</td>
                     <td>
-                        <input name="endDate" type="date" value="{{old('endDate')}}" id="endDate" onchange="dateDifference()">
+                        <input name="endDate" type="text" id="endDate" onchange="dateDifference()">
                     </td>
                     <td></td>
                 </tr>
@@ -63,7 +56,7 @@
                 <tr>
                     <td>Duration(Days)</td>
                     <td>:</td>
-                    <td><input name="duration" type="text" value="{{old('duration')}}" id="duration"> </td>
+                    <td><input name="duration" type="text" id="duration"> </td>
                     <td></td>
                 </tr>
                 <tr><td colspan="4"><hr /></td></tr>
@@ -94,26 +87,35 @@
     @endsection
 @section('js')
     <script>
+        $(function () {
+            $("#startDate").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+            });
+            $("#endDate").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+            });
+        });
         function dateDifference() {
             var startDate = $('#startDate').val();
+            console.log(startDate);
             var endDate = $('#endDate').val();
-
+            console.log(endDate);
             var date1 = new Date(startDate);
+            console.log(date1);
             var date2 = new Date(endDate);
-
-            var diffDays = Date2.getDate() - date1.getDate();
-
-            if (startDate !='' && endDate !='' )
+            console.log(date2);
+            var diffDays = date2.getDate() - date1.getDate();
+            if (date2<date1){
+                $('#duration').val('');
+                alert('End Date should be greater than start date.');
+            }else if(startDate !='' && endDate !='' )
             {
                 $('#duration').val(diffDays);
             }
         }
-        $(function () {
-            $("#startDate").datepicker({dateFormate: 'yy-mm-dd'});
-        });
-        $(function () {
-            $("#endDate").datepicker({dteFormate:'yy-mm-dd'});
-        });
+
 
     </script>
     @endsection

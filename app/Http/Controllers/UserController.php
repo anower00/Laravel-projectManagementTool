@@ -6,7 +6,9 @@ use App\Http\Requests\CreateUserRequest;
 use App\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Validator;
+use Intervention;
+use File;
 class UserController extends Controller
 {
     /**
@@ -44,6 +46,16 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
+//        dd($request);
+        if(isset($request->picture) && !empty($request->picture)){
+        $image = $request->picture;
+        $extension =$image->getClientOriginalExtension();//get image extension only
+        $imageOriginalName= $image->getClientOriginalName();
+        $basename = substr($imageOriginalName, 0 , strrpos($imageOriginalName, "."));//get image name without extension
+        $imageName=$basename.date("YmdHis").'.'.$extension;//make new name
+        $path = 'images/profilePicture/' . $imageName;
+        Intervention::make($image->getRealPath())->resize(200, 200)->save($path);
+    }
         $user = new Users();
         $user->name = $request->name;
         $user->username = $request->username;
@@ -53,7 +65,13 @@ class UserController extends Controller
         $user->designation = $request->designation;
         $user->status = $request->status;
         $user->gender = $request->gender;
-        $user->save();
+        if(isset($request->picture) && !empty($request->picture)) {
+            $user->profile_picture = $path;
+        }
+        $save = $user->save();
+        if ($save){
+            $request->session()->flash('message', 'User create successfully.');
+        }
 
         return redirect()->route('user.list');
     }
@@ -113,10 +131,74 @@ class UserController extends Controller
         $userToUpdate ->designation = $request->designation;
         $userToUpdate ->status = $request->status;
         $userToUpdate ->gender = $request->gender;
-        $userToUpdate->save();
+        $userToUpdate->update();
 
         return redirect()->route('user.list');
     }
+
+    public function resetPassword()
+    {
+        $user = session()->get('user');
+        return view('pages.user.reset-password', compact('user'));
+    }
+
+    public function admin_credential_rules(array $data)
+    {
+        $messages = [
+            'oldPass.required' => 'Please enter current password',
+            'newPass.required' => 'Please enter password',
+        ];
+
+        $validator = Validator::make($data, [
+            'oldPass' => 'required',
+            'newPass' => 'required|same:newPass',
+            'retypeNewPass' => 'required|same:newPass',
+        ], $messages);
+
+        return $validator;
+    }
+    public function updatePassword(Request $request)
+    {
+//        dd($request);
+        if(session()->has('user'))
+        {
+            $request_data = $request->All();
+//            dd($request_data);
+            $validator = $this->admin_credential_rules($request_data);
+            if($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator->getMessageBag()->toArray());
+//                return response()->json(array('error' => $validator->getMessageBag()->toArray()), 400);
+            }
+            else
+            {
+                $user = Users::find($request->uid);
+                $current_password = $user->password;
+                if($request_data['oldPass'] == $user->password)
+                {
+
+                    $user->password = $request->newPass;
+                    $user->save();
+                    return redirect()->back()->with('message', 'Password Updated!');
+                }
+                else
+                {
+                    return redirect()->back()->withErrors(['Password doesn\'t match']);
+                }
+            }
+        }
+        else
+        {
+            return redirect()->to('/');
+        }
+    }
+
+    public function searchUser(Request $request)
+    {
+        $userlist = Users::where($request->category,'Like','%'.$request->search_query.'%')->get();
+        return view('pages/user/list', compact('userlist'));
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -132,5 +214,40 @@ class UserController extends Controller
         return response()->json([
             'msg' => 'user deleted',
         ]);
+    }
+
+    public function profile()
+    {
+        $user = session()->get('user');
+
+        return view('pages.user.profile')
+            ->with('user',$user);
+    }
+
+    public function changeProfilePicture(Request $request)
+    {
+//        dd($request);
+
+        $user = session()->get('user');
+        if(isset($request->picture) && !empty($request->picture)) {
+            $image = $request->picture;
+            $extension = $image->getClientOriginalExtension();//get image extension only
+            $imageOriginalName = $image->getClientOriginalName();
+            $basename = substr($imageOriginalName, 0, strrpos($imageOriginalName, "."));//get image name without extension
+            $imageName = $basename . date("YmdHis") . '.' . $extension;//make new name
+            $path = 'images/profilePicture/' . $imageName;
+            Intervention::make($image->getRealPath())->resize(200, 200)->save($path);
+        }
+
+//        File::delete($user->profile_picture);
+        $user = Users::find($user->id);
+        if(isset($request->picture) && !empty($request->picture)) {
+            $user->profile_picture = $path;
+        }
+        $user->update();
+        $request->session()->put('user', $user);
+
+        return view('pages.user.profile')
+            ->with('user',$user);
     }
 }

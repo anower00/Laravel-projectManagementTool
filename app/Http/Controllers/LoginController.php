@@ -23,12 +23,12 @@ class LoginController extends Controller
         if(!$user)
         {
             $request->session()->flash('message', 'Invalid Username or Password');
-            return redirect()->route('login');
+            return view('login/index');
         }
         else
         {
             $request->session()->put('user', $user);
-            return redirect()->route('project');
+            return view('pages/user/index');
         }
     }
     public function logout(Request $request)
